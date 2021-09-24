@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components';
 
 const theme = {
     background: '#f5f8fb',
-    fontFamily: 'Helvetica Neue',
+    fontFamily: 'Red Hat Text',
     headerBgColor: '#EF6C00',
     headerFontColor: '#fff',
     headerFontSize: '15px',

@@ -1,7 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChatBot from 'react-simple-chatbot';
+import { ThemeProvider } from 'styled-components';
+import RedHatIcon from '../../assets/RedHatIcon.png';
+import ClientIcon from '../../assets/ClientIcon.svg';
 
+const theme = {
+    background: '#f5f8fb',
+    fontFamily: 'Red Hat Display',
+    headerBgColor: '#0066CC',
+    headerFontColor: '#fff',
+    headerFontSize: '15px',
+    botBubbleColor: '#0066CC',
+    botFontColor: '#fff',
+    userBubbleColor: '#fff',
+    userFontColor: '#4a4a4a',
+};
 class Review extends Component {
     constructor(props) {
         super(props);
@@ -59,110 +73,116 @@ function isFloat(n) {
 class SimpleForm extends Component {
     render() {
         return (
-            <ChatBot
-                steps={[
-                    {
-                        id: '1',
-                        message: 'What is your name?',
-                        trigger: 'name',
-                    },
-                    {
-                        id: 'name',
-                        user: true,
-                        trigger: '3',
-                    },
-                    {
-                        id: '3',
-                        message: 'Hi {previousValue}! Which product do you need help with?',
-                        trigger: 'product',
-                    },
-                    {
-                        id: 'product',
-                        options: [
-                            { value: 'RHEL', label: 'RHEL', trigger: '5' },
-                            { value: 'Ansible', label: 'Ansible', trigger: '5' },
-                            { value: 'Openshift', label: 'Openshift', trigger: '5' },
-                        ],
-                    },
-                    {
-                        id: '5',
-                        message: 'Which is the product version',
-                        trigger: 'version',
-                    },
-                    {
-                        id: 'version',
-                        user: true,
-                        trigger: '7',
-                        validator: (value) => {
-                            if (isFloat(value)) {
-                                return 'Please give a version number';
-                            } else if (value < 0) {
-                                return 'version must be positive';
-                            } else if (value > 10) {
-                                return `${value}? Bruh! That version does not exist`;
-                            }
-
-                            return true;
+            <ThemeProvider theme={theme}>
+                <ChatBot
+                    headerTitle="Red Hat Troubleshoot Bot"
+                    userAvatar={ClientIcon}
+                    botAvatar={RedHatIcon}
+                    recognitionEnable={true}
+                    steps={[
+                        {
+                            id: '1',
+                            message: 'What is your name?',
+                            trigger: 'name',
                         },
-                    },
-                    {
-                        id: '7',
-                        message: 'Great! Check out your summary',
-                        trigger: 'review',
-                    },
-                    {
-                        id: 'review',
-                        component: <Review />,
-                        asMessage: true,
-                        trigger: 'update',
-                    },
-                    {
-                        id: 'update',
-                        message: 'Would you like to update some field?',
-                        trigger: 'update-question',
-                    },
-                    {
-                        id: 'update-question',
-                        options: [
-                            { value: 'yes', label: 'Yes', trigger: 'update-yes' },
-                            { value: 'no', label: 'No', trigger: 'end-message' },
-                        ],
-                    },
-                    {
-                        id: 'update-yes',
-                        message: 'What field would you like to update?',
-                        trigger: 'update-fields',
-                    },
-                    {
-                        id: 'update-fields',
-                        options: [
-                            { value: 'name', label: 'Name', trigger: 'update-name' },
-                            { value: 'gender', label: 'Gender', trigger: 'update-gender' },
-                            { value: 'age', label: 'Age', trigger: 'update-age' },
-                        ],
-                    },
-                    {
-                        id: 'update-name',
-                        update: 'name',
-                        trigger: '7',
-                    },
-                    {
-                        id: 'update-gender',
-                        update: 'gender',
-                        trigger: '7',
-                    },
-                    {
-                        id: 'update-age',
-                        update: 'age',
-                        trigger: '7',
-                    },
-                    {
-                        id: 'end-message',
-                        message: 'Thanks! Your data was submitted successfully!',
-                        end: true,
-                    },
-                ]}
-            />
+                        {
+                            id: 'name',
+                            user: true,
+                            trigger: '3',
+                        },
+                        {
+                            id: '3',
+                            message: 'Hi {previousValue}! Which product do you need help with?',
+                            trigger: 'product',
+                        },
+                        {
+                            id: 'product',
+                            options: [
+                                { value: 'RHEL', label: 'RHEL', trigger: '5' },
+                                { value: 'Ansible', label: 'Ansible', trigger: '5' },
+                                { value: 'Openshift', label: 'Openshift', trigger: '5' },
+                            ],
+                        },
+                        {
+                            id: '5',
+                            message: 'Which is the product version',
+                            trigger: 'version',
+                        },
+                        {
+                            id: 'version',
+                            user: true,
+                            trigger: '7',
+                            validator: (value) => {
+                                if (isFloat(value)) {
+                                    return 'Please give a version number';
+                                } else if (value < 0) {
+                                    return 'version must be positive';
+                                } else if (value > 10) {
+                                    return `${value}? Bruh! That version does not exist`;
+                                }
+
+                                return true;
+                            },
+                        },
+                        {
+                            id: '7',
+                            message: 'Great! Check out your summary',
+                            trigger: 'review',
+                        },
+                        {
+                            id: 'review',
+                            component: <Review />,
+                            asMessage: true,
+                            trigger: 'update',
+                        },
+                        {
+                            id: 'update',
+                            message: 'Would you like to update some field?',
+                            trigger: 'update-question',
+                        },
+                        {
+                            id: 'update-question',
+                            options: [
+                                { value: 'yes', label: 'Yes', trigger: 'update-yes' },
+                                { value: 'no', label: 'No', trigger: 'end-message' },
+                            ],
+                        },
+                        {
+                            id: 'update-yes',
+                            message: 'What field would you like to update?',
+                            trigger: 'update-fields',
+                        },
+                        {
+                            id: 'update-fields',
+                            options: [
+                                { value: 'name', label: 'Name', trigger: 'update-name' },
+                                { value: 'gender', label: 'Gender', trigger: 'update-gender' },
+                                { value: 'age', label: 'Age', trigger: 'update-age' },
+                            ],
+                        },
+                        {
+                            id: 'update-name',
+                            update: 'name',
+                            trigger: '7',
+                        },
+                        {
+                            id: 'update-gender',
+                            update: 'gender',
+                            trigger: '7',
+                        },
+                        {
+                            id: 'update-age',
+                            update: 'age',
+                            trigger: '7',
+                        },
+                        {
+                            id: 'end-message',
+                            message: 'Thanks! Your data was submitted successfully!',
+                            end: true,
+                        },
+                    ]}
+                />
+            </ThemeProvider>
         );
     }
 }
